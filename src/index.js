@@ -7,17 +7,19 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Plants from './pages/Plants';
 import Home from './pages/Home';
 import Search from './pages/Search';
+import theme from './theme';
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} >
-        <Route index element={<Home />} />
-        <Route path="Plants" element={<Plants />} />
-        <Route path="Search" element={<Search />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>,
+  <React.StrictMode>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

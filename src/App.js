@@ -1,18 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-import { Link, Outlet } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout";
+
+import Home from "./pages/Home";
+import Plants from "./pages/Plants";
+import Search from "./pages/Search";
+
 
 function App() {
   return (
-    <div>
-      <nav>
-        <h1>Home</h1>
-        <Link to="/"> Home</Link>
-        <Link to="/Plants">Plants</Link>
-        <Link to="/Search">Search</Link>
-      </nav>
-      <Outlet />
-    </div>
+
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="plants" element={<Plants />} />
+        <Route path="search" element={<Search />} />
+      </Route>
+
+    </Routes>
+
   );
 }
 
