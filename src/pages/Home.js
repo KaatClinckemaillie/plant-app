@@ -1,6 +1,13 @@
+import TabBar from '../components/TabBar';
+import Box from '@mui/material/Box';
+
 const Home = () => {
+
   return (
-    <h2>Home</h2>
+    <Box mx={'1rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+      <h2>Home</h2>
+      <TabBar />
+    </Box>
   )
 }
 
