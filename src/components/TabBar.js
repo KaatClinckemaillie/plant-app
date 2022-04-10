@@ -11,7 +11,7 @@ import Tasks from './Tasks';
 
 
 const Tab = styled(TabUnstyled)`
-  color:${'#939A8D'};
+  color:${'#6E7A64'};
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: regular;
@@ -26,7 +26,7 @@ const Tab = styled(TabUnstyled)`
 
   &.${tabUnstyledClasses.selected} {
     background-color: ${'#214622'};
-    color: ${'#C4DEA9'};
+    color: ${'#DEFFBF'};
     border-radius: 30px;
   }
 
