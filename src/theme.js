@@ -37,6 +37,11 @@ const theme = createTheme({
       main: '#facf5b',
       contrastText: '#69591b',
     },
+    error: {
+      main: '#ffdada',
+      dark: '#821818',
+      contrastText: '#821818',
+    },
     divider: '#214622',
   },
   typography: {

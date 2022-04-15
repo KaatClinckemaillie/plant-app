@@ -13,7 +13,7 @@ const TabPanel = (props) => {
       style={{marginTop: "11rem"}}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 1, m:'auto' }}>
           {children}
         </Box>
       )}

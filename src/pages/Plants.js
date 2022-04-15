@@ -1,7 +1,8 @@
-import { Stack, Typography, AppBar, Tabs, Tab, Box } from '@mui/material';
+import { Typography, AppBar, Tabs, Tab, Box, Stack } from '@mui/material';
 import * as React from 'react';
 import TabPanel from '../components/TabPanel';
 import LabelMyPlants from '../components/LabelMyPlants';
+import LocationsMyPlants from '../components/LocationsMyPlants';
 
 const a11yProps = (index) => {
   return {
@@ -35,7 +36,13 @@ const Plants = () => {
       </AppBar>
 
       <TabPanel value={value} index={0}>
-          Locaties
+          <Stack spacing={2} direction="column" >
+            <LocationsMyPlants />
+            <LocationsMyPlants />
+            <LocationsMyPlants />
+          </Stack>
+          
+
         </TabPanel>
         <TabPanel value={value} index={1}>
           planten

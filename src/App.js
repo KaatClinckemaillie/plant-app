@@ -5,10 +5,15 @@ import Home from "./pages/Home";
 import Plants from "./pages/Plants";
 import Search from "./pages/Search";
 
+import { useQuery } from "react-query";
+
 
 function App() {
-  return (
 
+
+
+  return (
+    
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
