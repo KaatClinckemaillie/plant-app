@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import { styled } from '@mui/system';
+import { Stack } from '@mui/material';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
@@ -59,10 +60,16 @@ const TabBar = () => {
         <Tab>Upcoming</Tab>
       </TabsList>
       <TabPanel value={0}>
-        <Tasks />
-        
+        <Stack spacing={4}>
+          <Tasks action={'Water'}/>
+          <Tasks action={'Repot'}/>
+          <Tasks action={'Mist'}/>
+          <Tasks action={'Repot'}/>
+        </Stack>
       </TabPanel>
-      <TabPanel value={1}>Upcoming akjhtmohgroiahregopiagoipr</TabPanel>
+      <TabPanel value={1}>
+        Upcoming akjhtmohgroiahregopiagoipr
+        </TabPanel>
     </TabsUnstyled>
   );
 }
