@@ -7,13 +7,18 @@ import { useQuery } from 'react-query';
 
 const label = {inputProps: { 'aria-label': 'checkbox test'}}
 
-const Task = ({task}) => {
+const Task = () => {
 
-  console.log(task);
+
+
+    const {  data: plants } = useQuery("plants", async () => {
+    const data = await fetch("http://localhost:1337/api/plants?populate=*").then(r => r.json());
+    return data;
+  });
 
   return(
     <Stack direction='row' spacing={2} alignItems='center' justifyContent='space-between'>
-      <Avatar sx={{ width: 72, height: 72 }} alt="Remy Sharp" src={''} />
+      <Avatar sx={{ width: 72, height: 72 }} alt="Remy Sharp" src={plants && `${plants.data[0].attributes.cover.data.attributes.formats.small.url}`} />
       <Stack spacing={-.5} width={200}>
         <Typography variant="body1" component="p">
           Montsera

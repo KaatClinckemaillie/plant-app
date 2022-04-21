@@ -2,6 +2,8 @@ import { Paper, Typography, Stack, CircularProgress, Alert } from '@mui/material
 import Task from './Task';
 import { useQuery } from 'react-query';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Tasks = ({ action }) => {
 
   const qs = require('qs');
@@ -16,7 +18,7 @@ const Tasks = ({ action }) => {
   });
 
   const { isLoading, error, data: tasks } = useQuery("tasks", async () => {
-    const data = await fetch(`http://localhost:1337/api/tasks?populate=*/${query}`).then(r => r.json());
+    const data = await fetch(`${backendUrl}/api/tasks?populate=*/${query}`).then(r => r.json());
     return data;
   });
 
