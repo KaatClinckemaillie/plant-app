@@ -1,5 +1,6 @@
 import { Paper, ImageList, Typography, Grid, ImageListItem, Chip } from '@mui/material';
-import montsera from '../assets/plants/montsera.jpeg'
+import montsera from '../assets/plants/montsera.jpeg';
+import { Outlet, Link } from "react-router-dom";
 
 const srcset = (image, size, rows = 1, cols = 1) => {
   return {
@@ -12,7 +13,9 @@ const srcset = (image, size, rows = 1, cols = 1) => {
 
 const LocationsMyPlants = () => {
   return(
-    <Grid container spacing={1} sx={{m:'auto'}}>
+    <div>
+    <Link to="/location">
+    <Grid container spacing={1} sx={{m:'auto'}} >
       <Grid item xs={12} padding={0}>
           <ImageList 
             sx={{height: 184, width: 364}}
@@ -45,6 +48,9 @@ const LocationsMyPlants = () => {
         <Chip label="6 taken" color="error" />
       </Grid>
     </Grid>
+    </Link>
+    
+    </div>
   )
 }
 
