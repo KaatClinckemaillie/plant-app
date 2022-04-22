@@ -62,9 +62,6 @@ const TabBar = () => {
       <TabPanel value={0}>
         <Stack spacing={4}>
           <Tasks action={'Water'}/>
-          <Tasks action={'Repot'}/>
-          <Tasks action={'Mist'}/>
-          <Tasks action={'Repot'}/>
         </Stack>
       </TabPanel>
       <TabPanel value={1}>

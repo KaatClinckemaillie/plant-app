@@ -7,11 +7,19 @@ import { useQuery } from 'react-query';
 
 const label = {inputProps: { 'aria-label': 'checkbox test'}}
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
-const Task = () => {
 
-
-
-    const {  data: plants } = useQuery("plants", async () => {
+const Task = ({task}) => {
+  const qs = require('qs');
+  const query = qs.stringify({
+    filters: {
+      username: {
+        $eq: 'John',
+      },
+    },
+  }, {
+    encodeValuesOnly: true,
+  });
+  const {  data: plants } = useQuery("plants", async () => {
     const data = await fetch(`${backendUrl}/api/plants?populate=*`).then(r => r.json());
     return data;
   });

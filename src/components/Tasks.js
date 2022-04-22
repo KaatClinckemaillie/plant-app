@@ -10,7 +10,7 @@ const Tasks = ({ action }) => {
   const query = qs.stringify({
     filters: {
       action: {
-        $eq: {action},
+        $eq: {},
       },
     },
   }, {
@@ -18,7 +18,7 @@ const Tasks = ({ action }) => {
   });
 
   const { isLoading, error, data: tasks } = useQuery("tasks", async () => {
-    const data = await fetch(`${backendUrl}/api/tasks?populate=*/${query}`).then(r => r.json());
+    const data = await fetch(`${backendUrl}/api/tasks?populate=*`).then(r => r.json());
     return data;
   });
 
@@ -29,10 +29,10 @@ const Tasks = ({ action }) => {
       {error && <Alert severity="error">Something went wrong</Alert>}
       <Typography variant="h2" component="h3">
           {action}
+          
       </Typography>
       <Stack spacing={5} sx={{mt: 4}}>
-        {tasks && tasks.data.map(task => <Task key={task.id} task={task}/>)}
-
+        {tasks && tasks.data.filter(task => task.attributes.action.data.attributes.name === action).map(task => <Task key={task.id} task={task}/>)}
       </Stack>
       
     </Paper>
