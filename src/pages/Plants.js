@@ -25,7 +25,7 @@ const Plants = () => {
 
   return(
     <>
-      <Box m={'1rem'}>
+      <Box m={'1rem'} >
         <AppBar position="fixed" sx={{bgcolor: 'background.default'}} elevation={0}>
           <Typography component="h2" variant="h1" sx={{color: 'primary.main', mx:4, mt: 4, mb: 3}}>
             My plants

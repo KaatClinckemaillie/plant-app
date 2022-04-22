@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Plants from "./pages/Plants";
 import Search from "./pages/Search";
 import Location from "./pages/Location";
+import Plant from './pages/Plant';
 
 
 import { useQuery } from "react-query";
@@ -23,6 +24,7 @@ function App() {
         <Route path="plants" element={<Plants />} />
         <Route path="search" element={<Search />} />
         <Route path="location" element={<Location />}/>
+        <Route path="plant/:plantId" element={<Plant />}/>
       </Route>
 
     </Routes>

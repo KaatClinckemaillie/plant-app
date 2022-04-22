@@ -9,6 +9,7 @@ import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 
 
 import Tasks from './Tasks';
+import TasksWeek from './TasksWeek';
 
 
 const Tab = styled(TabUnstyled)`
@@ -62,11 +63,13 @@ const TabBar = () => {
       <TabPanel value={0}>
         <Stack spacing={4}>
           <Tasks action={'Water'}/>
+          <Tasks action={'Repot'} />
+          <Tasks action={'Update'} />
         </Stack>
       </TabPanel>
       <TabPanel value={1}>
-        Upcoming akjhtmohgroiahregopiagoipr
-        </TabPanel>
+        <TasksWeek title={'This week'}/>
+      </TabPanel>
     </TabsUnstyled>
   );
 }
