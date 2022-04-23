@@ -66,19 +66,7 @@ const theme = createTheme({
       fontSize: '1.2rem',
     },
   },
-  components: {
-    MuiLink: {
-      defaultProps: {
-        component: LinkBehavior,
-      },
-    },
-    MuiButtonBase: {
-      defaultProps: {
-        LinkComponent: LinkBehavior,
-      },
-    },
-    
-  },
+
 });
 
 export default theme

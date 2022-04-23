@@ -20,7 +20,7 @@ const NavBar = () => {
       sx={{bgcolor: 'primary.dark', height: 80, pb:1}}
     >
 
-      <BottomNavigationAction  to="/" icon={<Badge badgeContent={5} color='warning'><HomeIcon sx={{bgcolor:'secondary.contrastText', width:50, height:40, p:1, borderRadius: 5}}/></Badge>} sx={{color: 'primary.dark'}}/>
+      <BottomNavigationAction  to="/" icon={<HomeIcon />} sx={{color: 'secondary.main'}}/>
       <BottomNavigationAction  to="/plants" icon={<SpaIcon />} sx={{color: 'secondary.main'}}/>
       <BottomNavigationAction  to="/search" icon={<SearchIcon />} sx={{color: 'secondary.main'}}/>
     </BottomNavigation>
