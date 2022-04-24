@@ -3,6 +3,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SpaIcon from '@mui/icons-material/Spa';
 import SearchIcon from '@mui/icons-material/Search';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
+import {Link} from 'react-router-dom'
 
 
 
@@ -20,9 +21,9 @@ const NavBar = () => {
       sx={{bgcolor: 'primary.dark', height: 80, pb:1}}
     >
 
-      <BottomNavigationAction  to="/" icon={<HomeIcon />} sx={{color: 'secondary.main'}}/>
-      <BottomNavigationAction  to="/plants" icon={<SpaIcon />} sx={{color: 'secondary.main'}}/>
-      <BottomNavigationAction  to="/search" icon={<SearchIcon />} sx={{color: 'secondary.main'}}/>
+      <BottomNavigationAction component={Link}  to="/" icon={<HomeIcon />} sx={{color: 'secondary.main'}}/>
+      <BottomNavigationAction component={Link}  to="/plants" icon={<SpaIcon />} sx={{color: 'secondary.main'}}/>
+      <BottomNavigationAction component={Link}  to="/search" icon={<SearchIcon />} sx={{color: 'secondary.main'}}/>
     </BottomNavigation>
   </Paper>);
 }
