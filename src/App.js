@@ -24,7 +24,7 @@ function App() {
         <Route path="plants" element={<Plants />} />
         <Route path="search" element={<Search />} />
         <Route path="location" element={<Location />}/>
-        <Route path="plant/:plantSortId" element={<Plant />}/>
+        <Route path="plant/:plantId" element={<Plant />}/>
       </Route>
 
     </Routes>

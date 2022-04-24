@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import SpaIcon from '@mui/icons-material/Spa';
 import SearchIcon from '@mui/icons-material/Search';
-import { BottomNavigation, BottomNavigationAction, Paper, Badge } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 
 
 
