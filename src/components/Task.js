@@ -11,12 +11,14 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Task = ({task}) => {
   const plantId = task.attributes.plant.data.id ;
-
+  console.log(task)
   const { data: plant } = useQuery(["plant", plantId], async () => {
     const data = await fetch(`${backendUrl}/api/plants/${plantId}?populate=*`).then(r => r.json());
     return data;
   });
-  
+  if(plant){
+    console.log(plant)
+  }
   return(
     <Stack direction='row' spacing={2} alignItems='center' justifyContent='space-between'>
       <Avatar sx={{ width: 72, height: 72 }} alt={plant && plant.data.attributes.cover.data.attributes.alternativeText}  src={plant && plant.data.attributes.cover.data.attributes.url}  />

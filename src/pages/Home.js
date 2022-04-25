@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import * as React from 'react';
 import { styled } from '@mui/system';
 import { Stack, CircularProgress, Alert } from '@mui/material';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
@@ -7,10 +6,15 @@ import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
+//import { useStore } from '../store';
+import { useNavigate } from "react-router-dom";
+import { useStore } from '../store';
 
 
 import Tasks from '../components/Tasks';
 import TasksWeek from '../components/TasksWeek';
+
 
 const Tab = styled(TabUnstyled)`
   color:${'#6E7A64'};
@@ -54,55 +58,69 @@ const TabsList = styled(TabsListUnstyled)`
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
+  const userId = useStore(state => state.userId);
+
+  console.log(userId); 
+  const navigate = useNavigate();
+  const isLogged = localStorage.getItem('jwt');
+
+  if(!isLogged){
+    navigate("/LogIn", {replace:true})
+  }
   
+  
+
   const { isLoading: tasksLoading, error: tasksError, data: tasks } = useQuery("tasks", async () => {
     const data = await fetch(`${backendUrl}/api/tasks?populate=*`).then(r => r.json());
     return data;
-  });
+  }); 
 
-  const { isLoading: actionsLoading, error: actionsError,data: actions } = useQuery("actions", async () => {
+  const { isLoading: actionsLoading, error: actionsError, data: actions } = useQuery("actions", async () => {
     const data = await fetch(`${backendUrl}/api/actions`).then(r => r.json());
     return data;
-  });
+  }); 
 
-  const current = new Date();
-  const month = ('0'+(current.getMonth()+1)).slice(-2);
-  const date = `${current.getFullYear()}-${month}-${current.getDate()}`
 
-  if(tasks && actions){
+    const current = new Date();
+    const month = ('0'+(current.getMonth()+1)).slice(-2);
+    const date = `${current.getFullYear()}-${month}-${current.getDate()}`
 
-    return (
+    if(tasks && actions){
+
+      return (
+        <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+          <h2>Home</h2>
+          <TabsUnstyled defaultValue={0}>
+            <TabsList>
+              <Tab>Today</Tab>
+              <Tab>Upcoming</Tab>
+            </TabsList>
+            <TabPanel value={0}>
+              <Stack spacing={4}>
+                {actions.data.map(action => <Tasks key={action.id} action={action.attributes.name} tasks={tasks.data.filter(task => task.attributes.action.data.id === action.id && task.attributes.due <= date)} />)}
+              </Stack>
+            </TabPanel>
+            <TabPanel value={1}>
+              <TasksWeek title={'This week'}/>
+            </TabPanel>
+            </TabsUnstyled>
+        </Box>
+      )
+    }else if(actionsLoading || tasksLoading){
+      return(
+        <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+          <CircularProgress />
+        </Box>
+      )
+    }else {
+      return(
       <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <h2>Home</h2>
-        <TabsUnstyled defaultValue={0}>
-          <TabsList>
-            <Tab>Today</Tab>
-            <Tab>Upcoming</Tab>
-          </TabsList>
-          <TabPanel value={0}>
-            <Stack spacing={4}>
-              {actions.data.map(action => <Tasks key={action.id} action={action.attributes.name} tasks={tasks.data.filter(task => task.attributes.action.data.id === action.id && task.attributes.due <= '2022-04-24')} />)}
-            </Stack>
-          </TabPanel>
-          <TabPanel value={1}>
-            <TasksWeek title={'This week'}/>
-          </TabPanel>
-          </TabsUnstyled>
-      </Box>
-    )
-  }else if(actionsLoading || tasksLoading){
-    return(
-      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <CircularProgress />
-      </Box>
-    )
-  }else {
-    return(
-     <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-       <Alert severity="error">Something went wrong</Alert>
-     </Box>  
-    )
-  }
+        <Alert severity="error">Something went wrong</Alert>
+      </Box>  
+      )
+    }
+
+
 }
 
 export default Home;
