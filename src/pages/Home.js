@@ -1,15 +1,17 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
-import { Stack, CircularProgress, Alert } from '@mui/material';
+import { Stack, CircularProgress, Alert, Fab } from '@mui/material';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 import { useQuery } from 'react-query';
 import React, { useEffect, useState } from 'react';
-//import { useStore } from '../store';
-import { useNavigate } from "react-router-dom";
 import { useStore } from '../store';
+import { useNavigate } from "react-router-dom";
+import BasicSpeedDial from '../components/BasicSpeedDial';
+
+
 
 
 import Tasks from '../components/Tasks';
@@ -58,20 +60,33 @@ const TabsList = styled(TabsListUnstyled)`
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
-  const userId = useStore(state => state.userId);
 
-  console.log(userId); 
   const navigate = useNavigate();
-  const isLogged = localStorage.getItem('jwt');
+  const isLogged = useStore(state => state.isLoggedIn)
+  const id = useStore(state => state.userId);
+  console.log(id);
 
   if(!isLogged){
     navigate("/LogIn", {replace:true})
-  }
+  } 
   
-  
+  const qs = require('qs');
+    const query = qs.stringify({
+    filters: {
+      profile:{
+        user_id: {
+          $eq: id,
+        },
+      }
+    },
+    populate : '*',
+  }, {
+    encodeValuesOnly: true,
+  });
+
 
   const { isLoading: tasksLoading, error: tasksError, data: tasks } = useQuery("tasks", async () => {
-    const data = await fetch(`${backendUrl}/api/tasks?populate=*`).then(r => r.json());
+    const data = await fetch(`${backendUrl}/api/tasks?${query}`).then(r => r.json());
     return data;
   }); 
 
@@ -90,6 +105,9 @@ const Home = () => {
       return (
         <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
           <h2>Home</h2>
+
+          <BasicSpeedDial />
+
           <TabsUnstyled defaultValue={0}>
             <TabsList>
               <Tab>Today</Tab>
@@ -104,6 +122,7 @@ const Home = () => {
               <TasksWeek title={'This week'}/>
             </TabPanel>
             </TabsUnstyled>
+            
         </Box>
       )
     }else if(actionsLoading || tasksLoading){

@@ -7,6 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import BasicSelect from "../components/BasicSelect";
 import { styled } from '@mui/material/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useStore } from '../store';
 
 const Input = styled('input')({
   display: 'none',
@@ -17,24 +18,31 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const AddPlant = () => {
   const { plantsortId } = useParams();
+  const userId = useStore(state => state.userId);
+  console.log(userId);
   const navigate = useNavigate();
-  const { handleSubmit, formState: { errors }, register, control, reset } = useForm();
+  const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm();
   const queryClient = useQueryClient();
 
-  const addPlant = async (data) => {
+
+
+  const addPlant = async ({data}) => {
+    const formData = new FormData();
+    if(data.cover.length > 0) {
+      formData.append("files.cover", data.cover[0], data.cover[0].name)
+    }
+    formData.append("data", JSON.stringify({...data, cover:null}));    
     return await fetch(`${backendUrl}/api/plants`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then(r => r.json());
+      body: formData,
+    }).then(r => r.json());    
   }
 
   const mutation = useMutation(addPlant, {
     onSuccess : () => {
       console.log("success")
       queryClient.invalidateQueries('plants');
+      
       reset()
     },
   })
@@ -42,10 +50,16 @@ const AddPlant = () => {
   const onSubmit = data => {
     console.log('pressed submit');
     data.plantsort = plantsortId;
+    console.log(data);
     if(!data.name){
       data.name = plantsort.data.attributes.name
     }
-    data.cover = plantsort.data.attributes.cover.data.id;
+
+    console.log(data.cover)
+    if(!data.cover){
+      data.cover = plantsort.data.attributes.cover.data.id;
+    } 
+
     console.log(data)
     mutation.mutate({data})
   }
@@ -56,9 +70,13 @@ const AddPlant = () => {
 
 
   const { isLoading, data: locations } = useQuery("locations", async () => {
-    const data = await fetch("http://localhost:1337/api/locations").then(r => r.json());
+    const data = await fetch("http://localhost:1337/api/locations?populate=*").then(r => r.json());
     return data;
   });
+
+  if(locations){
+    console.log(locations)
+  }
 
   const { isLoading: plantsortIsLoading, data: plantsort } = useQuery("plantsort", async () => {
     const data = await fetch(`${backendUrl}/api/plantsorts/${plantsortId}?populate=*`).then(r => r.json());
@@ -66,7 +84,6 @@ const AddPlant = () => {
   });
 
   if(plantsort){
-    console.log(plantsort.data.attributes.cover.data.id)
     return(
       <Box m={3}>
         <IconButton aria-label="back" onClick={()=> navigate(-1)} >
@@ -76,15 +93,17 @@ const AddPlant = () => {
           {/* hier een foto van de plant */}
           <Stack alignItems={'center'} my={5}>
           <Avatar sx={{ width: 200, height: 200 }} alt={plantsort.data.attributes.cover.data.attributes.alternativeText}  src={plantsort.data.attributes.cover.data.attributes.url}/>
+          <Stack direction="row" spacing={2} alignItems="center">
             <label htmlFor="contained-button-file">
-              <Input accept="image/*" id="contained-button-file" multiple type="file" />
-              <Button  component="span">
+              <Input accept="image/*" id="contained-button-file" multiple type="file" {...register("cover")}/>
+              <Button  component="span" disabled={mutation.isLoading}>
                 Upload your own image
               </Button>
             </label>
+            <Typography>{watch("cover") && watch("cover").length > 0 && watch("cover")[0].name}</Typography>
+          </Stack>
           </Stack>
           {/* {locations && <BasicSelect items={locations} label={'Location'}/>} */}
-          {locations && console.log(locations.data[0].attributes.name)}
           
           <Typography variant="h2" component="p">
             Name your plant?

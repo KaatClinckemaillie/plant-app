@@ -3,6 +3,7 @@ import NavBar from './NavBar';
 import { Outlet } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../store';
+import BasicSpeedDial from '../components/BasicSpeedDial';
 
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
