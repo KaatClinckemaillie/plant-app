@@ -8,7 +8,7 @@ import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 import { useQuery } from 'react-query';
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../store';
-import { useNavigate } from "react-router-dom";
+
 import BasicSpeedDial from '../components/BasicSpeedDial';
 
 
@@ -61,14 +61,11 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
 
-  const navigate = useNavigate();
   const isLogged = useStore(state => state.isLoggedIn)
   const id = useStore(state => state.userId);
   console.log(id);
 
-  if(!isLogged){
-    navigate("/LogIn", {replace:true})
-  } 
+
   
   const qs = require('qs');
     const query = qs.stringify({
