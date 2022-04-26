@@ -61,7 +61,9 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
 
-  const isLogged = useStore(state => state.isLoggedIn)
+  const username = useStore(state => state.username);
+  console.log(username)
+
   const id = useStore(state => state.userId);
   console.log(id);
 

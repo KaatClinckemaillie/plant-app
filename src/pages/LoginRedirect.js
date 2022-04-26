@@ -83,7 +83,7 @@ const LoginRedirect = (props) => {
       .then(res => {
         // Successfully logged with Strapi
         // Now saving the jwt to use it for future authenticated requests to Strapi
-        setLoggedIn(res.jwt, res.user.username);
+        setLoggedIn(res.jwt, res.user.username, res.user.id);
         setText('You have been successfully logged in. You will be redirected in a few seconds...');
         
         //check if the userId is already in the profile db

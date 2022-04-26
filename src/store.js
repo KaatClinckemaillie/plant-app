@@ -1,5 +1,6 @@
 import create from 'zustand';
 import produce from "immer";
+import { useRadioGroup } from '@mui/material';
 
 const useStore = create(set => ({
   jwt: localStorage.getItem('jwt'),
@@ -10,11 +11,12 @@ const useStore = create(set => ({
   setProfileId: (id) => set(produce(state => {state.profileId = id})),
 
 
-  setLoggedIn: (jwt, username) => set(state => {
+  setLoggedIn: (jwt, username, userId) => set(state => {
     localStorage.setItem('jwt', jwt);
     localStorage.setItem('username', username);
+    localStorage.setItem('userId', userId);
 
-    return { ...state, isLoggedIn: !!jwt, username: username};
+    return { ...state, isLoggedIn: !!jwt, username: username, userId: userId};
   }),
 
   logout: () => set(state => {
