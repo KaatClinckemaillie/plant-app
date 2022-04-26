@@ -6,7 +6,7 @@ const useStore = create(set => ({
   jwt: localStorage.getItem('jwt'),
   isLoggedIn: !!localStorage.getItem('jwt'),
   username: localStorage.getItem('username'),
-  userId: localStorage.getItem('id'),
+  userId: localStorage.getItem('userId'),
   profileId: 0,
   setProfileId: (id) => set(produce(state => {state.profileId = id})),
 
