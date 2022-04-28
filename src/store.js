@@ -8,6 +8,8 @@ const useStore = create(set => ({
   username: localStorage.getItem('username'),
   userId: localStorage.getItem('userId'),
   profileId: 0,
+  plants: [],
+  setPlants : (plants) => set(produce(state => {state.plants = plants})),
   setProfileId: (id) => set(produce(state => {state.profileId = id})),
 
 

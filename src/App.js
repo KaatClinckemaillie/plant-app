@@ -19,17 +19,19 @@ import { Navigate } from "react-router-dom";
 
 function App() {
 
-  const isLogged = useStore(state => state.isLoggedIn)
+  const isLogged = useStore(state => state.isLoggedIn);
+  const userId = useStore(state => state.userId);
+
 
   return (
     
     <Routes>
         <Route exact path="/connect/:providerName/redirect" element={<LoginRedirect />} />
         <Route path="/" element={<Layout />}  >
-          <Route index element={isLogged ? <Home /> : <Navigate to="/LogIn" replace={true}/>} />
+          <Route index element={userId ? <Home /> : <Navigate to="/LogIn" replace={true}/>} />
           <Route path="plants" element={isLogged ? <Plants /> : <Navigate to="/LogIn" replace={true}/>} />
           <Route path="search" element={isLogged ? <Search /> : <Navigate to="/LogIn" replace={true}/>} />
-          <Route path="location" element={isLogged ? <Location /> : <Navigate to="/LogIn" replace={true}/>}/>        
+          <Route path="location/:locationId" element={isLogged ? <Location /> : <Navigate to="/LogIn" replace={true}/>}/>        
         </Route>
         <Route path="plant/:plantId" element={isLogged ? <Plant /> : <Navigate to="/LogIn" replace={true}/>}/>
         <Route path="plantsort/:plantsortId" element={isLogged ? <Plantsort /> : <Navigate to="/LogIn" replace={true}/>}/>

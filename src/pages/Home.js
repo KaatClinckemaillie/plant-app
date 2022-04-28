@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
-import { Stack, CircularProgress, Alert, Fab } from '@mui/material';
+import { Stack, CircularProgress, Alert, Typography, Button } from '@mui/material';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
@@ -60,7 +60,9 @@ const TabsList = styled(TabsListUnstyled)`
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
-
+  const setPlants = useStore(state => state.setPlants);
+  const myPlants = useStore(state => state.plants);
+  console.log(myPlants)
   const username = useStore(state => state.username);
   console.log(username)
 
@@ -84,6 +86,7 @@ const Home = () => {
   });
 
 
+  //get data
   const { isLoading: tasksLoading, error: tasksError, data: tasks } = useQuery("tasks", async () => {
     const data = await fetch(`${backendUrl}/api/tasks?${query}`).then(r => r.json());
     return data;
@@ -94,19 +97,29 @@ const Home = () => {
     return data;
   }); 
 
+  const {data: plants} = useQuery("plants", async() => {
+    const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
+    return data;
+  })
 
-    const current = new Date();
-    const month = ('0'+(current.getMonth()+1)).slice(-2);
-    const date = `${current.getFullYear()}-${month}-${current.getDate()}`
+  // set my plants in store
+  if(plants) {
+    setPlants(plants);
+  }
 
-    if(tasks && actions){
+  //get date
+  const current = new Date();
+  const month = ('0'+(current.getMonth()+1)).slice(-2);
+  const date = `${current.getFullYear()}-${month}-${current.getDate()}`
 
-      return (
-        <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-          <h2>Home</h2>
-
-          <BasicSpeedDial />
-
+  //check if everythin loaded
+  if(tasks && actions && plants){
+    return(
+      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+        <h2>Home</h2>
+        <BasicSpeedDial />
+        {/* check if user have already some plants (if not => display button 'add plants'; else => show tasks) */}
+        {plants.data.length > 0 ?           
           <TabsUnstyled defaultValue={0}>
             <TabsList>
               <Tab>Today</Tab>
@@ -118,25 +131,34 @@ const Home = () => {
               </Stack>
             </TabPanel>
             <TabPanel value={1}>
-              <TasksWeek title={'This week'}/>
+              {/* <TasksWeek title={'This week'}/> */}
+              <Tasks action={'Next week'} tasks={tasks.data.filter(task => task.attributes.due > date)}/>
             </TabPanel>
-            </TabsUnstyled>
-            
-        </Box>
-      )
-    }else if(actionsLoading || tasksLoading){
-      return(
-        <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-          <CircularProgress />
-        </Box>
-      )
-    }else {
-      return(
+          </TabsUnstyled>            
+     : 
+      <Stack>
+        <Typography>
+          Add some plants to your profile!
+        </Typography>
+        <Button>Add Plants</Button>
+      </Stack> 
+     }
+     </Box>
+    )
+
+  }else if(actionsLoading || tasksLoading){
+    return(
       <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <Alert severity="error">Something went wrong</Alert>
-      </Box>  
-      )
-    }
+        <CircularProgress />
+      </Box>
+    )
+  }else {
+    return(
+    <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+      <Alert severity="error">Something went wrong</Alert>
+    </Box>  
+    )
+  }
 
 
 }

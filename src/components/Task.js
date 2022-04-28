@@ -1,40 +1,54 @@
 import { Stack, Avatar, Typography, IconButton, Checkbox, CircularProgress, Alert } from '@mui/material';
-import montsera from '../assets/plants/montsera.jpeg'
-
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Link } from "react-router-dom";
+import { useStore } from '../store';
 
 const label = {inputProps: { 'aria-label': 'checkbox test'}}
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Task = ({task}) => {
-  const plantId = task.attributes.plant.data.id ;
-  console.log(task)
-  const { data: plant } = useQuery(["plant", plantId], async () => {
-    const data = await fetch(`${backendUrl}/api/plants/${plantId}?populate=*`).then(r => r.json());
-    return data;
-  });
-  if(plant){
-    console.log(plant)
+  const myPlants = useStore(state => state.plants);
+  console.log(myPlants)
+  const queryClient = useQueryClient();
+  const taskId = task.id
+  console.log(taskId);
+
+  const removeTask = async () => {
+    return await fetch(`${backendUrl}/api/tasks/${taskId}`, {method: "DELETE"} )
   }
+
+
+  const mutation = useMutation(removeTask, {
+    onSuccess : () => {
+      console.log("success")
+      queryClient.invalidateQueries('tasks');
+    }
+  })
+
+  const handleCheckTask = () => {
+    console.log('check');
+    mutation.mutate()
+  }
+
+
+  const plantId = task.attributes.plant.data.id ;
+  const plant = myPlants.data.filter(plant => plant.id === plantId)[0];
+
   return(
     <Stack direction='row' spacing={2} alignItems='center' justifyContent='space-between'>
-      <Avatar sx={{ width: 72, height: 72 }} alt={plant && plant.data.attributes.cover.data.attributes.alternativeText}  src={plant && plant.data.attributes.cover.data.attributes.url}  />
-       <Link to={`/plant/${plantId}`}> 
-
-        <Stack spacing={-.5} width={200}>
+      <Avatar sx={{ width: 72, height: 72 }} alt={plant.attributes.cover.data.attributes.alternativeText}  src={plant.attributes.cover.data.attributes.url}  />
+        <Stack component={Link} to={`/plant/${plantId}`} spacing={-.5} width={200}>
           <Typography variant="body1" component="p">
             {task.attributes.plant.data.attributes.name}
           </Typography>
           <Typography variant="body1" component="p" sx={{color: 'text.hint'}}>
-             { plant && plant.data.attributes.location.data.attributes.name }
+             { plant.attributes.location.data.attributes.name }
           </Typography>
-        </Stack>
-       </Link> 
+        </Stack>       
       <div>
-        <Checkbox {...label} icon={<RadioButtonUncheckedIcon fontSize="large" color="primary"/>} checkedIcon={<CheckCircleIcon fontSize="large"/>} />
+        <Checkbox {...label} onClick={handleCheckTask} icon={<RadioButtonUncheckedIcon  fontSize="large" color="primary"/>} checkedIcon={<CheckCircleIcon fontSize="large"/>} />
       </div>
     </Stack>
   );
