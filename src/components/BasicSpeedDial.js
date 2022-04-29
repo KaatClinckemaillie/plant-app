@@ -9,8 +9,8 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { Link, useNavigate } from "react-router-dom";
 
 const actions = [
-  { icon: <GrassIcon />, name: 'Add Plant' },
-  { icon: <HomeOutlinedIcon />, name: 'Add Location' },
+  { icon: <GrassIcon />, name: 'Add Plant', page: '/search' },
+  { icon: <HomeOutlinedIcon />, name: 'Add Location', page:'/addLocation' },
 ];
 
 export default function SpeedDialTooltipOpen() {
@@ -37,7 +37,7 @@ export default function SpeedDialTooltipOpen() {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={() => navigate("/search")}
+            onClick={() => navigate(action.page)}
           />
         ))}
       </SpeedDial>

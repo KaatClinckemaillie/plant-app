@@ -1,6 +1,7 @@
 import { Box, Typography, Grid, CircularProgress, Alert, AppBar } from '@mui/material';
 import { useQuery } from 'react-query';
 import CategoryItem from '../components/CategoryItem';
+import {Link} from 'react-router-dom';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -21,7 +22,7 @@ const Search = () => {
       <Grid container spacing={3} justifyContent={'center'} mt={15}>
         {isLoading && <CircularProgress />}
         {error && <Alert severity="error">Something went wrong</Alert>}
-        {plantcategories && plantcategories.data.map(category => <CategoryItem category={category} key={category.id}/>)}
+        {plantcategories && plantcategories.data.map(category =><Grid key={category.id} item component={Link} to={`/plantCategory/${category.id}`}> <CategoryItem category={category}  /> </Grid>)}
       </Grid>  
     </Box>
   )

@@ -36,6 +36,8 @@ const Task = ({task}) => {
   const plantId = task.attributes.plant.data.id ;
   const plant = myPlants.data.filter(plant => plant.id === plantId)[0];
 
+  console.log(plant);
+
   return(
     <Stack direction='row' spacing={2} alignItems='center' justifyContent='space-between'>
       <Avatar sx={{ width: 72, height: 72 }} alt={plant.attributes.cover.data.attributes.alternativeText}  src={plant.attributes.cover.data.attributes.url}  />

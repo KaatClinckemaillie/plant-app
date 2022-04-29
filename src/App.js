@@ -9,7 +9,9 @@ import Plant from './pages/Plant';
 import Plantsort from './pages/Plantsort';
 import PlantCategory from './pages/PlantCategory';
 import AddPlant from './pages/AddPlant';
+import AddLocation from "./pages/AddLocation";
 import LoginRedirect from './pages/LoginRedirect';
+import AddPicture from "./pages/AddPicture";
 import LogIn from "./pages/LogIn";
 import { useStore } from './store';
 import { useQuery } from "react-query";
@@ -37,6 +39,8 @@ function App() {
         <Route path="plantsort/:plantsortId" element={isLogged ? <Plantsort /> : <Navigate to="/LogIn" replace={true}/>}/>
         <Route path="plantCategory/:plantCategoryId" element={ isLogged ? <PlantCategory /> : <Navigate to="/LogIn" replace={true}/>}/>
         <Route path='addPlant/:plantsortId' element={isLogged ? <AddPlant /> : <Navigate to="/LogIn" replace={true}/>} />
+        <Route path='addPicture/:plantId' element={isLogged ? <AddPicture /> : <Navigate to="/LogIn" replace={true}/>} />
+        <Route path='addLocation' element={isLogged ? <AddLocation /> : <Navigate to="/addLocation" replace={true}/>} />
         <Route path='logIn' element={<LogIn />} />
         
       </Routes>

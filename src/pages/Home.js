@@ -127,11 +127,10 @@ const Home = () => {
             </TabsList>
             <TabPanel value={0}>
               <Stack spacing={4}>
-                {actions.data.map(action => <Tasks key={action.id} action={action.attributes.name} tasks={tasks.data.filter(task => task.attributes.action.data.id === action.id && task.attributes.due <= date)} />)}
+                { tasks && actions.data.map(action => <Tasks key={action.id} action={action.attributes.name} tasks={tasks.data.filter(task => task.attributes.action.data.id === action.id && task.attributes.due <= date)} />)}
               </Stack>
             </TabPanel>
             <TabPanel value={1}>
-              {/* <TasksWeek title={'This week'}/> */}
               <Tasks action={'Next week'} tasks={tasks.data.filter(task => task.attributes.due > date)}/>
             </TabPanel>
           </TabsUnstyled>            

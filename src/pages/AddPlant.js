@@ -27,6 +27,7 @@ const AddPlant = () => {
 
 
   const addPlant = async ({data}) => {
+    console.log(data)
     const formData = new FormData();
     if(data.cover.length > 0) {
       formData.append("files.cover", data.cover[0], data.cover[0].name)
@@ -56,7 +57,8 @@ const AddPlant = () => {
     }
 
     console.log(data.cover)
-    if(!data.cover){
+
+    if(data.cover.length === 0){
       data.cover = plantsort.data.attributes.cover.data.id;
     } 
 
@@ -93,7 +95,7 @@ const AddPlant = () => {
           {/* hier een foto van de plant */}
           <Stack alignItems={'center'} my={5}>
           <Avatar sx={{ width: 200, height: 200 }} alt={plantsort.data.attributes.cover.data.attributes.alternativeText}  src={plantsort.data.attributes.cover.data.attributes.url}/>
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack spacing={2} alignItems="center">
             <label htmlFor="contained-button-file">
               <Input accept="image/*" id="contained-button-file" multiple type="file" {...register("cover")}/>
               <Button  component="span" disabled={mutation.isLoading}>
@@ -119,7 +121,7 @@ const AddPlant = () => {
           <LoadingButton fullWidth loading={mutation.isLoading} loadingIndicator="Adding plant" type="submit" variant="contained">Add Plant</LoadingButton>
           <Snackbar open={mutation.isSuccess} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={3000} onClose={handleCloseSnackbar}>
             <Alert severity="success" sx={{ width: '100%' }}>
-              Restaurant added
+              Plant added
             </Alert>
           </Snackbar>
         </Stack>  

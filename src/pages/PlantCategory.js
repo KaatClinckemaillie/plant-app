@@ -50,7 +50,7 @@ const PlantCategory = () => {
         </Stack>
       </AppBar>
       <Stack mt={15} mx={3} spacing={5}>
-        {plantsorts && plantsorts.data.map(plantsort => <PlantItem key={plantsort.id} plantsort={plantsort}/>)}
+        {plantsorts && plantsorts.data.map(plantsort => <PlantItem key={plantsort.id} plant={plantsort} kind={'public'}/>)}
       </Stack>
     </Box>
   )
