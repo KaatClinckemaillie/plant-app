@@ -72,9 +72,6 @@ const LocationsMyPlants = ({location}) => {
           {location.attributes.plants.data.length} PLANTS
         </Typography>        
       </Grid>
-      <Grid item xs={4} sx={{display:'grid', placeContent:'top end'}} paddingRight={3}>
-        <Chip label="6 taken" color="error" />
-      </Grid>
     </Grid>
   )
 }

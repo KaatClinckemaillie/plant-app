@@ -4,6 +4,7 @@ import TabPanel from '../components/TabPanel';
 import LabelMyPlants from '../components/LabelMyPlants';
 import LocationMyPlants from '../components/LocationMyPlants';
 import PlantMyPlants from '../components/PlantMyPlants';
+import StandardImagesList from '../components/StandardImageList';
 import PlantItem from '../components/PlantItem';
 import { useQuery } from 'react-query';
 import { useStore } from '../store';
@@ -37,14 +38,19 @@ const Plants = () => {
     encodeValuesOnly: true,
   });
 
-  const { isLoading, error, data: locations } = useQuery("locations", async () => {
+  const { isLoading: loadingLocations, error, data: locations } = useQuery("locations", async () => {
     const data = await fetch(`${backendUrl}/api/locations?${query}`).then(r => r.json());
     return data;
   });
 
-  const {data: plants} = useQuery("plants", async () => {
+  const {data: plants, isLoading: loadingPlants} = useQuery("plants", async () => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
+  });
+
+  const { data: progresses } = useQuery('progresses', async () => {
+    const data = await fetch(`${backendUrl}/api/progresses?${query}`).then(r => r.json());
+    return data
   });
 
   const handleChange = (e, newValue) => {
@@ -55,10 +61,12 @@ const Plants = () => {
     setPlants(plants);
   }
 
-  if(locations && plants){
+  if(progresses) {
+    console.log(progresses)
+  }
 
 
-    console.log(locations)
+
   return(
     <>
       <Box m={'1rem'} >
@@ -68,9 +76,9 @@ const Plants = () => {
           </Typography>
           <Box sx={{ borderBottom: 3, borderColor: 'text.light' }}>
             <Tabs value={value} onChange={handleChange} aria-label="tab my plants" variant="fullWidth" >
-              <Tab label={LabelMyPlants(locations.data.length, 'locations')} {...a11yProps(0)}/>
-              <Tab label={LabelMyPlants(plants.data.length, 'Plants')} {...a11yProps(1)}/>
-              <Tab label={LabelMyPlants(5, 'Pictures')} {...a11yProps(2)}/>
+              <Tab label={LabelMyPlants(locations ? locations.data.length : '', 'locations')} {...a11yProps(0)}/>
+              <Tab label={LabelMyPlants(plants ? plants.data.length : '', 'Plants')} {...a11yProps(1)}/>
+              <Tab label={LabelMyPlants(progresses ? progresses.data.length : '', 'Pictures')} {...a11yProps(2)}/>
             </Tabs>
           </Box>
         </AppBar>
@@ -78,7 +86,8 @@ const Plants = () => {
           <TabPanel value={value} index={0} >
             <Stack alignItems={'center'}>
               <List sx={{ width: '100%', maxWidth: 360}}>
-                {locations && locations.data.map(location => <LocationMyPlants key={location.id} location={location} />)}
+                {plants && locations && locations.data.map(location => <LocationMyPlants key={location.id} location={location} />)}
+                {loadingLocations && <CircularProgress/>}
               </List>
               <Button variant="contained" size="medium" color="primary" aria-label="add location" sx={{width:200, mt:5}}>
                 Add location
@@ -89,6 +98,7 @@ const Plants = () => {
             <Stack alignItems={'center'}>
               <List sx={{ width: '100%', maxWidth: 360}}>
                 {plants && plants.data.map(plant => <PlantItem key={plant.id} plant={plant} kind={'personal'}/>)}
+                {loadingPlants && <CircularProgress/>}
               </List> 
               <Button variant="contained" size="medium" color="primary" aria-label="add location" sx={{width:200, mt:5}}>
                   Add plants
@@ -96,25 +106,13 @@ const Plants = () => {
             </Stack>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            foto's
+            {progresses && <StandardImagesList itemData={progresses.data}/>}
         </TabPanel>
       </Box>
 
     </>
   )
-  }else if(isLoading){
-    return(
-      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <CircularProgress />
-      </Box>    
-    )
-  }else {
-    return(
-      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <Alert severity="error">Something went wrong</Alert>
-      </Box>        
-    )
-  }
+
 }
 
 export default Plants;
