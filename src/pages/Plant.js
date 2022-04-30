@@ -11,6 +11,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const Plant = () => {
   const { plantId } = useParams();
   const navigate = useNavigate();
+
   const {data: plant} = useQuery(["plant", plantId], async () => {
     const data = await fetch(`${backendUrl}/api/plants/${plantId}?populate=*`).then(r => r.json());
     return data;
@@ -31,7 +32,6 @@ const Plant = () => {
     <Box m={'1rem'}>
       <Stack direction="column" justifyContent={'center'}>
         <Button component={Link} to={`/addPicture/${plantId}`} sx={{bgcolor:'primary.main', color:'#fff', mb:2, borderRadius:5, py:1}}>Add Picture</Button> 
-        <PlantInfo />
 
       </Stack>
     </ Box>

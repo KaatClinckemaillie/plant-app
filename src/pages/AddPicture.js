@@ -62,7 +62,8 @@ const AddPicture = () => {
     onSuccess: () => {
       console.log("success")
       queryClient.invalidateQueries('locations');
-      reset()
+      reset();
+      navigate(-1)
     }
   })
 

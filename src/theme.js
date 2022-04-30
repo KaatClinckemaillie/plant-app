@@ -65,6 +65,9 @@ const theme = createTheme({
     h4: {
       fontSize: '1.2rem',
     },
+    hidden : {
+      display: 'none',
+    }
   },
 
 });
