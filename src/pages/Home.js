@@ -97,7 +97,7 @@ const Home = () => {
     return data;
   }); 
 
-  const {data: plants} = useQuery("plants", async() => {
+  const {data: plants, isloading: plantsLoading} = useQuery("plants", async() => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
   })
@@ -109,9 +109,17 @@ const Home = () => {
 
   //get date
   const current = new Date();
-  const month = ('0'+(current.getMonth()+1)).slice(-2);
-  const date = `${current.getFullYear()}-${month}-${current.getDate()}`
+  const nextWeek = new Date();
+  nextWeek.setDate(current.getDate() + 7);
 
+  const month = ('0'+(current.getMonth()+1)).slice(-2);
+  const day = ('0'+(current.getDate())).slice(-2);
+  const date = `${current.getFullYear()}-${month}-${day}`;
+
+  const nextMonth = ('0'+(nextWeek.getMonth()+1)).slice(-2);
+  const nextDay = ('0'+(nextWeek.getDate())).slice(-2);
+  const dateNextWeek = `${nextWeek.getFullYear()}-${nextMonth}-${nextDay}`;
+  console.log(dateNextWeek)
   //check if everythin loaded
   if(tasks && actions && plants){
     return(
@@ -131,7 +139,10 @@ const Home = () => {
               </Stack>
             </TabPanel>
             <TabPanel value={1}>
-              <Tasks action={'Next week'} tasks={tasks.data.filter(task => task.attributes.due > date)}/>
+            {console.log(tasks)}
+             {
+               tasks && <Tasks action={'Next week'} tasks={tasks.data.filter(task => task.attributes.due > date && task.attributes.due <= dateNextWeek)}/>
+             }  
             </TabPanel>
           </TabsUnstyled>            
      : 
@@ -145,7 +156,7 @@ const Home = () => {
      </Box>
     )
 
-  }else if(actionsLoading || tasksLoading){
+  }else if(actionsLoading || tasksLoading || plantsLoading){
     return(
       <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
         <CircularProgress />

@@ -1,22 +1,31 @@
-import { Stack, Avatar, Typography, IconButton, Checkbox, CircularProgress, Alert } from '@mui/material';
+import { Stack, Avatar, Typography, IconButton, Checkbox, CircularProgress, Alert, Chip } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Link } from "react-router-dom";
 import { useStore } from '../store';
+import { useEffect, useState } from "react";
 
 const label = {inputProps: { 'aria-label': 'checkbox test'}}
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-const Task = ({task}) => {
+const Task = ({task, upcoming}) => {
   const myPlants = useStore(state => state.plants);
-  console.log(myPlants)
   const queryClient = useQueryClient();
-  const taskId = task.id
-  console.log(taskId);
-
-  const removeTask = async () => {
-    return await fetch(`${backendUrl}/api/tasks/${taskId}`, {method: "DELETE"} )
+  const taskId = task.id;
+  const plantId = task.attributes.plant.data.id ;
+  const plant = myPlants.data.filter(plant => plant.id === plantId)[0];
+  const watering = plant.attributes.plantsort.data.attributes.watering;
+  console.log(upcoming)
+  
+  const removeTask = async (data) => {
+    return await fetch(`${backendUrl}/api/tasks/${taskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type" : "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then(r => r.json());
   }
 
 
@@ -27,16 +36,35 @@ const Task = ({task}) => {
     }
   })
 
+
+  const calculateDue = (actionDays) => {
+    const current = new Date();
+    const dueAction = new Date();
+    dueAction.setDate(current.getDate() + actionDays);
+    const actionMonth = ('0'+(dueAction.getMonth()+1)).slice(-2);
+    const actionDay = ('0'+(dueAction.getDate())).slice(-2);
+    return `${dueAction.getFullYear()}-${actionMonth}-${actionDay}`;
+  }
+
   const handleCheckTask = () => {
-    console.log('check');
-    mutation.mutate()
+    const data = {}
+    if(task.attributes.action.data.attributes.name === 'Water') {
+      data.due = calculateDue(watering)
+    }else if(task.attributes.action.data.attributes.name === 'Repot') {
+      data.due = calculateDue(356);
+    }else if(task.attributes.action.data.attributes.name === 'Update') {
+      data.due = calculateDue(30);
+    }
+  
+    console.log(data);
+    mutation.mutate({data})
   }
 
 
-  const plantId = task.attributes.plant.data.id ;
-  const plant = myPlants.data.filter(plant => plant.id === plantId)[0];
+  
 
-  console.log(plant);
+
+  
 
   return(
     <Stack direction='row' spacing={2} alignItems='center' justifyContent='space-between'>
@@ -45,12 +73,13 @@ const Task = ({task}) => {
           <Typography variant="body1" component="p">
             {task.attributes.plant.data.attributes.name}
           </Typography>
-          <Typography variant="body1" component="p" sx={{color: 'text.hint'}}>
+          <Typography variant="body1" component="p" sx={{color: 'text.hint', pb:2}}>
              { plant.attributes.location.data.attributes.name }
           </Typography>
+          {upcoming && <Chip label={task.attributes.action.data.attributes.name} sx={{width: '6rem'}}/>}
         </Stack>       
       <div>
-        <Checkbox {...label} onClick={handleCheckTask} icon={<RadioButtonUncheckedIcon  fontSize="large" color="primary"/>} checkedIcon={<CheckCircleIcon fontSize="large"/>} />
+      {!upcoming &&  <Checkbox {...label} onClick={handleCheckTask} icon={<RadioButtonUncheckedIcon  fontSize="large" color="primary"/>} checkedIcon={<CheckCircleIcon fontSize="large"/>} />}
       </div>
     </Stack>
   );

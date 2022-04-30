@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { useStore } from '../store';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -14,26 +15,47 @@ const Input = styled('input')({
 });
 
 
-
-
 const AddPicture = () => {
-
+  const { plantId } = useParams();
   const navigate = useNavigate();
   const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm();
   const queryClient = useQueryClient();
+  const id = useStore(state => state.userId);
+
+  const qs = require('qs');
+  const queryProfile = qs.stringify({
+    filters: {
+      user_id: {
+          $eq: id,
+      },
+    },
+    populate : '*',
+  }, {
+    encodeValuesOnly: true,
+  });
+
+  const { data: profile} = useQuery("profile", async() => {
+    const data = await fetch(`${backendUrl}/api/profiles?${queryProfile}`).then(r => r.json());
+    return data;
+  })
 
 
-  const addPicture = async ({data}) => {
+  const addPicture = async (data) => {
     console.log(data);
+    data.profile = profile.data[0].id;
+    data.plant = plantId;
     const formData = new FormData();
-    if(data.cover.length > 0) {
-      formData.append("files.cover", data.cover[0], data.cover[0].name)
+    
+    if (data.cover.length > 0) {
+      formData.append("files.cover", data.cover[0], data.cover[0].name);
     }
-    formData.append("data", JSON.stringify({...data, cover:null})); 
-    return await fetch(`${backendUrl}/api/progress`, {
-      method: "POST",
-      body: formData,
-    }).then(r => r.json);
+      formData.append("data", JSON.stringify({ ...data, cover: null }))
+
+      return await fetch(`${backendUrl}/api/progresses`, {
+        method: "POST",
+        body: formData,
+      }).then(r => r.json());
+    
   };
 
   const mutation = useMutation(addPicture, {
@@ -51,7 +73,10 @@ const AddPicture = () => {
 
   const onSubmit = data => {
     console.log(data);
+    mutation.mutate(data)
   }
+
+
   return (
     <Box m={1}>
       <IconButton aria-label="back" onClick={()=> navigate(-1)} >
@@ -69,20 +94,37 @@ const AddPicture = () => {
           id="outlined-multiline-static"
           multiline
           rows={4}
-          defaultValue="Make note..."
+          placeholder="Write a note..."
+          {...register("note")}
         />   
-        <Stack spacing={2} alignItems="center">
-          <label htmlFor="contained-button-file">
+      <Stack  spacing={2} alignItems="center">
+        <label htmlFor="contained-button-file">
+          <Input accept="image/*" id="contained-button-file" type="file" required {...register("cover", {required : 'Please add a picture'})} />
+          <Button component="span" disabled={mutation.isLoading} sx={{margin:'auto', border:'dashed 0.1rem', py:'2rem', width:'21rem'}}>
+            <CameraAltIcon fontSize="large"/>
+          </Button>
+        </label>
+        <Typography>{watch("cover") && watch("cover").length > 0 && watch("cover")[0].name}</Typography>
+        <Typography>{errors?.cover?.message}</Typography>
+      </Stack>
+
+{/*           <label htmlFor="contained-button-file">
             <Input accept="image/*" id="contained-button-file" multiple type="file" {...register("cover")}/>
             <Button  component="span" disabled={mutation.isLoading} sx={{margin:'auto', border:'dashed 0.1rem', py:'2rem', width:'21rem'}}>
               <CameraAltIcon fontSize="large"/>
             </Button>
           </label>
+
           <Typography>{watch("cover") && watch("cover").length > 0 && watch("cover")[0].name}</Typography>
-        </Stack>
-        <LoadingButton loading={mutation.isLoading} loadingIndicator="Adding location" type="submit" variant="contained">
-          Save
-        </LoadingButton>
+          <Typography>{errors?.cover?.message}</Typography>
+ */}
+        {
+          profile &&
+            <LoadingButton loading={mutation.isLoading} loadingIndicator="Adding location" type="submit" variant="contained">
+            Save
+          </LoadingButton>
+        }
+        
         <Snackbar open={mutation.isSuccess} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={3000} onClose={handleCloseSnackbar}>
           <Alert severity="success" sx={{ width: '100%' }}>
             Picture added

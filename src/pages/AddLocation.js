@@ -42,21 +42,12 @@ const AddLocation = () => {
       console.log("success")
       queryClient.invalidateQueries('locations');
 
-      reset()
+      reset();
+      navigate(-1);
     }
   })
 
-  const onSubmit = data => {
-    console.log('clicked submit');
-    console.log(data);
-    console.log(data.locationcategory)
-    //const locationcategoryId = parseInt(data.locationcategory, 10); 
-    data.lighttype = data.lighttype.toString();
-    data.profile = profile.data[0].id
-    //data.locationcategory = locationcategoryId 
-    console.log(data);
-    mutation.mutate({data})
-  }
+
 
   const handleCloseSnackbar = () => {
     mutation.reset();
@@ -66,6 +57,22 @@ const AddLocation = () => {
     const data = await fetch(`${backendUrl}/api/locationcategories?populate=*`).then(r => r.json());
     return data;
   });
+
+  const onSubmit = data => {
+    console.log('clicked submit');
+    console.log(data);
+    if(!data.name){
+      const categoryId = data.locationcategory;
+      data.name = locationcategories.data.find(category => category.id.toString() === categoryId).attributes.name;
+    }
+    console.log(data.locationcategory)
+    //const locationcategoryId = parseInt(data.locationcategory, 10); 
+    data.lighttype = data.lighttype.toString();
+    data.profile = profile.data[0].id
+    //data.locationcategory = locationcategoryId 
+    console.log(data);
+    mutation.mutate({data})
+  }
 
 
   const qs = require('qs');

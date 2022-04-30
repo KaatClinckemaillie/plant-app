@@ -13,7 +13,10 @@ const Input = styled('input')({
   display: 'none',
 });
 
-
+const defaultValues = {
+  name: '',
+  location: '',
+};
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const AddPlant = () => {
@@ -21,30 +24,69 @@ const AddPlant = () => {
   const userId = useStore(state => state.userId);
   console.log(userId);
   const navigate = useNavigate();
-  const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm();
+  const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm({defaultValues});
   const queryClient = useQueryClient();
+  const id = useStore(state => state.userId);
 
+  const qs = require('qs');
+  const query = qs.stringify({
+    filters: {
+      profile:{
+        user_id: {
+          $eq: id,
+        },
+      }
+    },
+    populate : '*',
+  }, {
+    encodeValuesOnly: true,
+  });
 
+  const queryProfile = qs.stringify({
+    filters: {
+      user_id: {
+          $eq: id,
+      },
+    },
+    populate : '*',
+  }, {
+    encodeValuesOnly: true,
+  });
 
   const addPlant = async ({data}) => {
     console.log(data)
     const formData = new FormData();
-    if(data.cover.length > 0) {
+
+
+    if(isNaN(data.cover) && data.cover.length > 0) {
+
       formData.append("files.cover", data.cover[0], data.cover[0].name)
+      formData.append("data", JSON.stringify({...data, cover:null}));    
+      return await fetch(`${backendUrl}/api/plants`, {
+        method: "POST",
+        body: formData,
+      }).then(r => r.json());   
+    }else {
+
+      return await fetch(`${backendUrl}/api/plants`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({data}),
+      }).then(r => r.json());
     }
-    formData.append("data", JSON.stringify({...data, cover:null}));    
-    return await fetch(`${backendUrl}/api/plants`, {
-      method: "POST",
-      body: formData,
-    }).then(r => r.json());    
+ 
   }
 
   const mutation = useMutation(addPlant, {
     onSuccess : () => {
-      console.log("success")
+      console.log("success");
+
       queryClient.invalidateQueries('plants');
       
       reset()
+      navigate(-2);
     },
   })
   
@@ -57,11 +99,11 @@ const AddPlant = () => {
     }
 
     console.log(data.cover)
-
-    if(data.cover.length === 0){
+ 
+    if(data.cover.length === 0 || !data.cover){
       data.cover = plantsort.data.attributes.cover.data.id;
-    } 
-
+    }
+    data.profile = profile.data[0].id
     console.log(data)
     mutation.mutate({data})
   }
@@ -71,8 +113,8 @@ const AddPlant = () => {
   }
 
 
-  const { isLoading, data: locations } = useQuery("locations", async () => {
-    const data = await fetch("http://localhost:1337/api/locations?populate=*").then(r => r.json());
+  const { isLoading: locationIsLoading, data: locations } = useQuery("locations", async () => {
+    const data = await fetch(`${backendUrl}/api/locations?${query}`).then(r => r.json());
     return data;
   });
 
@@ -85,7 +127,12 @@ const AddPlant = () => {
     return data;
   });
 
-  if(plantsort){
+  const { data: profile} = useQuery("profile", async() => {
+    const data = await fetch(`${backendUrl}/api/profiles?${queryProfile}`).then(r => r.json());
+    return data;
+  })
+
+  if(plantsort && profile){
     return(
       <Box m={3}>
         <IconButton aria-label="back" onClick={()=> navigate(-1)} >
@@ -106,9 +153,9 @@ const AddPlant = () => {
           </Stack>
           </Stack>
           {/* {locations && <BasicSelect items={locations} label={'Location'}/>} */}
-          
-          <Typography variant="h2" component="p">
-            Name your plant?
+          <div>
+          <Typography variant="h3" component="p" mb={2}>
+            Want to give your plant a personal name?
           </Typography>
           <TextField
             fullWidth
@@ -117,7 +164,13 @@ const AddPlant = () => {
             error={!!errors?.name}
             helperText={errors?.name?.message}
             {...register("name")} />
-          
+          </div>
+         <Controller
+          control={control}
+          name="location"
+          rules={{required: "Pick a location"}} 
+          render={({field, fieldState}) => <BasicSelect error={fieldState.error} field={field} label="Location" options={locationIsLoading ? [] : locations.data.map(type => ({id: type.id, name: type.attributes.name}))} />}
+        />           
           <LoadingButton fullWidth loading={mutation.isLoading} loadingIndicator="Adding plant" type="submit" variant="contained">Add Plant</LoadingButton>
           <Snackbar open={mutation.isSuccess} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={3000} onClose={handleCloseSnackbar}>
             <Alert severity="success" sx={{ width: '100%' }}>

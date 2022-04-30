@@ -1,7 +1,7 @@
 import { Paper, Grid, Box, Typography, Stack, CardMedia, Button, CircularProgress, IconButton } from '@mui/material';
 import { useQuery } from 'react-query';
 import PlantInfo from '../components/PlantInfo';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
@@ -30,7 +30,7 @@ const Plant = () => {
       />    
     <Box m={'1rem'}>
       <Stack direction="column" justifyContent={'center'}>
-        <Button sx={{bgcolor:'primary.main', color:'#fff', mb:2, borderRadius:5, py:1}}>Add Picture</Button> 
+        <Button component={Link} to={`/addPicture/${plantId}`} sx={{bgcolor:'primary.main', color:'#fff', mb:2, borderRadius:5, py:1}}>Add Picture</Button> 
         <PlantInfo />
 
       </Stack>
