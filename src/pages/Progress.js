@@ -30,14 +30,27 @@ const Progress = () => {
                 loading="lazy"
               />
               <ImageListItemBar
-                title={new Date(`${progress.data.attributes.createdAt}`).getDate() + ' ' + new Date(`${progress.data.attributes.createdAt}`).toLocaleString('default', {month: 'short'})}
+                sx={{background:
+                  'linear-gradient(to top, rgba(0,0,0,0.7) 0%, ' +
+                  'rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+                  height: '10rem'
+              }}
+                title={
+                  <Typography component='h2'variant='h1' fontSize='2.5rem' sx={{mb: '-.5rem'}}>
+                   { new Date(`${progress.data.attributes.createdAt}`).getDate() + ' ' + new Date(`${progress.data.attributes.createdAt}`).toLocaleString('default', {month: 'short'})}
+                  </Typography>
+                }
+                subtitle={<Typography fontSize={20}>{progress.data.attributes.plant.data.attributes.name} </Typography>}
               />
               <ImageListItemBar
-                sx={{background: 'none'}}
+                sx={{background:
+                  'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
+                  'rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+                  height: '10rem'}}
                 position='top'
                 actionIcon={
-                  <IconButton aria-label="back" onClick={()=> navigate(-1)}>
-                    <CloseIcon fontSize='large' sx={{color:'black'}} />
+                  <IconButton aria-label="back" onClick={()=> navigate(-1)} sx={{marginTop: '-5rem'}}>
+                    <CloseIcon fontSize='large' sx={{color:'white'}} />
                   </ IconButton>
                 }
                 actionPosition='left'

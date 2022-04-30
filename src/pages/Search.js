@@ -1,7 +1,7 @@
-import { Box, Typography, Grid, CircularProgress, Alert, AppBar } from '@mui/material';
+import { Box, Typography, Grid, CircularProgress, Alert, AppBar, Link } from '@mui/material';
 import { useQuery } from 'react-query';
 import CategoryItem from '../components/CategoryItem';
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 

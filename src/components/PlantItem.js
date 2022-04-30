@@ -1,7 +1,7 @@
-import {Stack, Typography, Divider, IconButton} from '@mui/material';
+import {Stack, Typography, Divider, IconButton, Link} from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 
 const PlantItem = ({plant, kind}) => {
 

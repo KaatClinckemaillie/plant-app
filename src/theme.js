@@ -70,6 +70,25 @@ const theme = createTheme({
     }
   },
 
+  
+
+  components: {
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      },
+      styleOverrides:{
+        root:{
+          textDecoration: 'none'
+        }
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior,
+      },
+    },
+  },
+  }
 });
 
 export default theme

@@ -8,6 +8,7 @@ import StandardImagesList from '../components/StandardImageList';
 import PlantItem from '../components/PlantItem';
 import { useQuery } from 'react-query';
 import { useStore } from '../store';
+import { Link } from "react-router-dom";
 
 const a11yProps = (index) => {
   return {
@@ -84,23 +85,23 @@ const Plants = () => {
         </AppBar>
 
           <TabPanel value={value} index={0} >
-            <Stack alignItems={'center'}>
-              <List sx={{ width: '100%', maxWidth: 360}}>
+            <Stack alignItems={'center'} mb={5}>
+              <List sx={{ width: '100%'}} >
                 {plants && locations && locations.data.map(location => <LocationMyPlants key={location.id} location={location} />)}
                 {loadingLocations && <CircularProgress/>}
               </List>
-              <Button variant="contained" size="medium" color="primary" aria-label="add location" sx={{width:200, mt:5}}>
+              <Button component={Link} to='/addLocation' variant="contained" size="medium" color="primary" aria-label="add location" sx={{width:200, mt:5}}>
                 Add location
               </Button>
             </Stack>
           </TabPanel>
           <TabPanel value={value} index={1} >
-            <Stack alignItems={'center'}>
+            <Stack alignItems={'center'} mb={5}>
               <List sx={{ width: '100%', maxWidth: 360}}>
                 {plants && plants.data.map(plant => <PlantItem key={plant.id} plant={plant} kind={'personal'}/>)}
                 {loadingPlants && <CircularProgress/>}
               </List> 
-              <Button variant="contained" size="medium" color="primary" aria-label="add location" sx={{width:200, mt:5}}>
+              <Button component={Link} to='/search' variant="contained" size="medium" color="primary" aria-label="add location" sx={{width:200, mt:5}}>
                   Add plants
               </Button>
             </Stack>

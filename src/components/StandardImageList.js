@@ -16,7 +16,7 @@ export default function StandardImageList({itemData}) {
 
 
   return (
-    <ImageList cols={3} rowHeight={120}>
+    <ImageList cols={3} >
       {itemData.map((item) => (
         <ImageListItem component={Link} to={`/progress/${item.id}`} key={item.id}>
           <img

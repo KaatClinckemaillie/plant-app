@@ -1,6 +1,6 @@
-import { ImageList, Typography, Grid, ImageListItem, Chip, Paper } from '@mui/material';
+import { ImageList, Typography, Grid, ImageListItem, Chip, Paper, Link } from '@mui/material';
 import montsera from '../assets/plants/montsera.jpeg';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 import { useStore } from '../store';
 
@@ -25,7 +25,7 @@ const LocationsMyPlants = ({location}) => {
 
 
   return(
-    <Grid component={Link} to={`/location/${location.id}`} container spacing={1} sx={{m:'auto'}}>
+    <Grid component={Link} to={`/location/${location.id}`} container spacing={1} mt={4}>
       <Grid item xs={12} padding={0}>
         <ImageList 
           sx={{height: 183, width: 369}}
