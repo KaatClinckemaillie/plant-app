@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useStore } from '../store';
 import { useQuery , useMutation} from 'react-query';
+import { Button, Box, Typography} from '@mui/material';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -98,7 +99,14 @@ const LoginRedirect = (props) => {
       });
   }, [navigate, location.search, params.providerName, setLoggedIn]);
 
-  return <p>{text}</p>
+  /* return <p>{text}</p> */
+  return(
+    <Box sx={{bgcolor:'primary.light', width: '100vw', height:'100vh'}} alignItems={'center'} display={'flex'} flexDirection={'column'} justifyContent={'center'}>
+      <Typography fontSize={20} textAlign={'center'} sx={{color:'primary.main', marginTop:'-5rem'}}>
+        {text}
+      </Typography>
+    </Box>
+  )
 };
 
 export default LoginRedirect;

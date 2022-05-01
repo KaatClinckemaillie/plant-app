@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
-import { Stack, CircularProgress, Alert, Typography, Button } from '@mui/material';
+import { Stack, CircularProgress, Alert, Typography, Button , IconButton} from '@mui/material';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
@@ -8,6 +8,8 @@ import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 import { useQuery } from 'react-query';
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../store';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 
 import BasicSpeedDial from '../components/BasicSpeedDial';
 
@@ -16,6 +18,7 @@ import BasicSpeedDial from '../components/BasicSpeedDial';
 
 import Tasks from '../components/Tasks';
 import TasksWeek from '../components/TasksWeek';
+import { useNavigate } from 'react-router-dom';
 
 
 const Tab = styled(TabUnstyled)`
@@ -69,7 +72,7 @@ const Home = () => {
   const id = useStore(state => state.userId);
   console.log(id);
 
-
+  const navigate = useNavigate()
   
   const qs = require('qs');
     const query = qs.stringify({
@@ -111,7 +114,7 @@ const Home = () => {
   const current = new Date();
   const nextWeek = new Date();
   nextWeek.setDate(current.getDate() + 7);
-
+  
   const month = ('0'+(current.getMonth()+1)).slice(-2);
   const day = ('0'+(current.getDate())).slice(-2);
   const date = `${current.getFullYear()}-${month}-${day}`;
@@ -119,11 +122,17 @@ const Home = () => {
   const nextMonth = ('0'+(nextWeek.getMonth()+1)).slice(-2);
   const nextDay = ('0'+(nextWeek.getDate())).slice(-2);
   const dateNextWeek = `${nextWeek.getFullYear()}-${nextMonth}-${nextDay}`;
+
   console.log(dateNextWeek)
   //check if everythin loaded
   if(tasks && actions && plants){
     return(
-      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+      <>
+      <IconButton sx={{position: 'absolute', right: 0, top:0, margin: '1rem'}} aria-label="back" onClick={()=> navigate('/logIn')}>
+          <LogoutIcon />
+      </IconButton>
+      <Box mx={'1rem'} mb={'5rem'} mt={'2rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+
         <h2>Home</h2>
         <BasicSpeedDial />
         {/* check if user have already some plants (if not => display button 'add plants'; else => show tasks) */}
@@ -154,6 +163,7 @@ const Home = () => {
       </Stack> 
      }
      </Box>
+     </>
     )
 
   }else if(actionsLoading || tasksLoading || plantsLoading){
