@@ -9,8 +9,7 @@ const PlantItem = ({plant, kind}) => {
   if(kind === 'public') {
     personal = false;
   }
-  console.log(personal);
-  console.log(plant);
+
   return(
     <>
       <Stack py={2} direction={'row'} spacing={3} component={Link} to={personal ? `/plant/${plant.id}` : `/plantsort/${plant.id}`} alignItems='center' justifyContent={'space-between'}>

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
@@ -15,8 +15,7 @@ import LoginRedirect from './pages/LoginRedirect';
 import AddPicture from "./pages/AddPicture";
 import LogIn from "./pages/LogIn";
 import { useStore } from './store';
-import { useQuery } from "react-query";
-import { Navigate } from "react-router-dom";
+
 
 
 
@@ -24,7 +23,7 @@ function App() {
 
   const isLogged = useStore(state => state.isLoggedIn);
   const userId = useStore(state => state.userId);
-
+ 
 
   return (
     

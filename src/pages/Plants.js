@@ -62,10 +62,7 @@ const Plants = () => {
     setPlants(plants);
   }
 
-  if(progresses) {
-    console.log(progresses)
-  }
-
+ 
 
 
   return(

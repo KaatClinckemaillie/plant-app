@@ -17,7 +17,6 @@ import BasicSpeedDial from '../components/BasicSpeedDial';
 
 
 import Tasks from '../components/Tasks';
-import TasksWeek from '../components/TasksWeek';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -64,13 +63,9 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
   const setPlants = useStore(state => state.setPlants);
-  const myPlants = useStore(state => state.plants);
-  console.log(myPlants)
-  const username = useStore(state => state.username);
-  console.log(username)
 
   const id = useStore(state => state.userId);
-  console.log(id);
+
 
   const navigate = useNavigate()
   
@@ -123,7 +118,7 @@ const Home = () => {
   const nextDay = ('0'+(nextWeek.getDate())).slice(-2);
   const dateNextWeek = `${nextWeek.getFullYear()}-${nextMonth}-${nextDay}`;
 
-  console.log(dateNextWeek)
+
   //check if everythin loaded
   if(tasks && actions && plants){
     return(
@@ -148,7 +143,6 @@ const Home = () => {
               </Stack>
             </TabPanel>
             <TabPanel value={1}>
-            {console.log(tasks)}
              {
                tasks && <Tasks action={'Next week'} tasks={tasks.data.filter(task => task.attributes.due > date && task.attributes.due <= dateNextWeek)}/>
              }  

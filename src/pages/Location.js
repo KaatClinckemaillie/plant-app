@@ -42,12 +42,9 @@ const Location = () => {
     return data;
   });     
 
-  if(location){
-    console.log(location);
-  }
 
   if(plants){
-    console.log(plants)
+
   return(
     <Box m={'1rem'}>
       <AppBar position="fixed" sx={{bgcolor: 'background.default'}} elevation={0} >

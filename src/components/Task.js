@@ -16,7 +16,7 @@ const Task = ({task, upcoming}) => {
   const plantId = task.attributes.plant.data.id ;
   const plant = myPlants.data.filter(plant => plant.id === plantId)[0];
   const watering = plant.attributes.plantsort.data.attributes.watering;
-  console.log(upcoming)
+
   
   const removeTask = async (data) => {
     return await fetch(`${backendUrl}/api/tasks/${taskId}`, {

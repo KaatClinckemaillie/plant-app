@@ -22,7 +22,6 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const AddPlant = () => {
   const { plantsortId } = useParams();
   const userId = useStore(state => state.userId);
-  console.log(userId);
   const navigate = useNavigate();
   const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm({defaultValues});
   const queryClient = useQueryClient();
@@ -93,18 +92,17 @@ const AddPlant = () => {
   const onSubmit = data => {
     console.log('pressed submit');
     data.plantsort = plantsortId;
-    console.log(data);
+
     if(!data.name){
       data.name = plantsort.data.attributes.name
     }
 
-    console.log(data.cover)
  
     if(data.cover.length === 0 || !data.cover){
       data.cover = plantsort.data.attributes.cover.data.id;
     }
     data.profile = profile.data[0].id
-    console.log(data)
+
     mutation.mutate({data})
   }
 
@@ -118,9 +116,7 @@ const AddPlant = () => {
     return data;
   });
 
-  if(locations){
-    console.log(locations)
-  }
+
 
   const { isLoading: plantsortIsLoading, data: plantsort } = useQuery(["plantsort", plantsortId], async () => {
     const data = await fetch(`${backendUrl}/api/plantsorts/${plantsortId}?populate=*`).then(r => r.json());
@@ -152,7 +148,7 @@ const AddPlant = () => {
             <Typography>{watch("cover") && watch("cover").length > 0 && watch("cover")[0].name}</Typography>
           </Stack>
           </Stack>
-          {/* {locations && <BasicSelect items={locations} label={'Location'}/>} */}
+
           <div>
           <Typography variant="h3" component="p" mb={2}>
             Want to give your plant a personal name?

@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Stack, Box, TextField, Snackbar, Alert, Grid, CircularProgress, Paper ,Typography, Avatar, Button, IconButton } from '@mui/material';
+import { Stack, Box, TextField, Snackbar, Alert,  Paper ,Typography,  Button, IconButton } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -41,7 +41,6 @@ const AddPicture = () => {
 
 
   const addPicture = async (data) => {
-    console.log(data);
     data.profile = profile.data[0].id;
     data.plant = plantId;
     const formData = new FormData();
@@ -73,7 +72,6 @@ const AddPicture = () => {
 
 
   const onSubmit = data => {
-    console.log(data);
     mutation.mutate(data)
   }
 
@@ -109,16 +107,6 @@ const AddPicture = () => {
         <Typography>{errors?.cover?.message}</Typography>
       </Stack>
 
-{/*           <label htmlFor="contained-button-file">
-            <Input accept="image/*" id="contained-button-file" multiple type="file" {...register("cover")}/>
-            <Button  component="span" disabled={mutation.isLoading} sx={{margin:'auto', border:'dashed 0.1rem', py:'2rem', width:'21rem'}}>
-              <CameraAltIcon fontSize="large"/>
-            </Button>
-          </label>
-
-          <Typography>{watch("cover") && watch("cover").length > 0 && watch("cover")[0].name}</Typography>
-          <Typography>{errors?.cover?.message}</Typography>
- */}
         {
           profile &&
             <LoadingButton loading={mutation.isLoading} loadingIndicator="Adding location" type="submit" variant="contained">

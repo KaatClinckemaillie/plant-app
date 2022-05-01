@@ -17,10 +17,7 @@ const srcset = (image, size, rows = 1, cols = 1) => {
 
 const LocationsMyPlants = ({location}) => {
   const plants = useStore(state => state.plants).data.filter(plant => plant.attributes.location.data.id === location.id);
-  console.log(location)
-  console.log(plants)
-  console.log(plants[0])
-  console.log(plants[1])
+
   
 
 
@@ -61,7 +58,7 @@ const LocationsMyPlants = ({location}) => {
               : <Paper sx={{height: 90, width: 90, bgcolor: 'primary.light', borderRadius: 0}} elevation={0}/>
             } 
           </ImageListItem>
-          {console.log(plants)}
+
         </ImageList>
       </Grid>
       <Grid item xs={8} paddingLeft={2}>

@@ -9,9 +9,6 @@ import InfoIcon from '@mui/icons-material/Info';
 
 
 export default function StandardImageList({itemData}) {
-  console.log(itemData)
-
-  
 
 
 
