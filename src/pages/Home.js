@@ -90,7 +90,7 @@ const Home = () => {
 
 
   //get data
-  const { isLoading: tasksLoading, error: tasksError, data: tasks } = useQuery("tasks", async () => {
+  const { isLoading: tasksLoading, error: tasksError, data: tasks } = useQuery(["tasks", query], async () => {
     const data = await fetch(`${backendUrl}/api/tasks?${query}`).then(r => r.json());
     return data;
   }); 
@@ -100,7 +100,7 @@ const Home = () => {
     return data;
   }); 
 
-  const {data: plants, isloading: plantsLoading} = useQuery("plants", async() => {
+  const {data: plants, isloading: plantsLoading} = useQuery(["plants", query], async() => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
   })

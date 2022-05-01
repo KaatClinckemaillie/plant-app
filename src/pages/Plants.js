@@ -39,17 +39,17 @@ const Plants = () => {
     encodeValuesOnly: true,
   });
 
-  const { isLoading: loadingLocations, error, data: locations } = useQuery("locations", async () => {
+  const { isLoading: loadingLocations, error, data: locations } = useQuery(["locations", query], async () => {
     const data = await fetch(`${backendUrl}/api/locations?${query}`).then(r => r.json());
     return data;
   });
 
-  const {data: plants, isLoading: loadingPlants} = useQuery("plants", async () => {
+  const {data: plants, isLoading: loadingPlants} = useQuery(["plants", query], async () => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
   });
 
-  const { data: progresses } = useQuery('progresses', async () => {
+  const { data: progresses } = useQuery(['progresses', query], async () => {
     const data = await fetch(`${backendUrl}/api/progresses?${query}`).then(r => r.json());
     return data
   });

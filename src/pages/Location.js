@@ -32,7 +32,7 @@ const Location = () => {
     encodeValuesOnly: true,
   });
 
-  const { isLoading, error, data: plants} = useQuery("plants", async () => {
+  const { isLoading, error, data: plants} = useQuery(["plants", query], async () => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
   });  
@@ -70,7 +70,7 @@ const Location = () => {
         </Stack>
          <Divider light />
       </AppBar>
-    <Stack mt={20}>
+    <Stack mt={24} >
       {plants.data.map(plant => <PlantItem key={plant.id} plant={plant} kind={'personal'}/>)}
     </Stack>
     </Box>

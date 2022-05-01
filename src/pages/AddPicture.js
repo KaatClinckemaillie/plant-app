@@ -34,7 +34,7 @@ const AddPicture = () => {
     encodeValuesOnly: true,
   });
 
-  const { data: profile} = useQuery("profile", async() => {
+  const { data: profile} = useQuery(["profile", queryProfile], async() => {
     const data = await fetch(`${backendUrl}/api/profiles?${queryProfile}`).then(r => r.json());
     return data;
   })

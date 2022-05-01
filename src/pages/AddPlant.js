@@ -113,7 +113,7 @@ const AddPlant = () => {
   }
 
 
-  const { isLoading: locationIsLoading, data: locations } = useQuery("locations", async () => {
+  const { isLoading: locationIsLoading, data: locations } = useQuery(["locations", query], async () => {
     const data = await fetch(`${backendUrl}/api/locations?${query}`).then(r => r.json());
     return data;
   });
@@ -122,12 +122,12 @@ const AddPlant = () => {
     console.log(locations)
   }
 
-  const { isLoading: plantsortIsLoading, data: plantsort } = useQuery("plantsort", async () => {
+  const { isLoading: plantsortIsLoading, data: plantsort } = useQuery(["plantsort", plantsortId], async () => {
     const data = await fetch(`${backendUrl}/api/plantsorts/${plantsortId}?populate=*`).then(r => r.json());
     return data;
   });
 
-  const { data: profile} = useQuery("profile", async() => {
+  const { data: profile} = useQuery(["profile", queryProfile], async() => {
     const data = await fetch(`${backendUrl}/api/profiles?${queryProfile}`).then(r => r.json());
     return data;
   })

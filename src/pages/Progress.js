@@ -10,7 +10,7 @@ const Progress = () => {
   const navigate = useNavigate();
 
 
-  const { isLoading, error, data: progress } = useQuery("progress", async () => {
+  const { isLoading, error, data: progress } = useQuery(["progress", progressId], async () => {
     const data = await fetch(`${backendUrl}/api/progresses/${progressId}?populate=*`).then(r => r.json());
     return data;
   });
