@@ -160,17 +160,11 @@ const Home = () => {
      </>
     )
 
-  }else if(actionsLoading || tasksLoading || plantsLoading){
-    return(
-      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <CircularProgress />
-      </Box>
-    )
   }else {
     return(
-    <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
-      <Alert severity="error">Something went wrong</Alert>
-    </Box>  
+      <Box mx={'1rem'} mb={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} sx={{height:'100vh'}}>
+        <CircularProgress />
+      </Box>
     )
   }
 
