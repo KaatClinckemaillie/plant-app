@@ -1,11 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Stack, Box, TextField, Snackbar, Alert,  Paper ,Typography,  Button, IconButton } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useForm } from 'react-hook-form';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Alert, Box, Button, IconButton, Paper, Snackbar, Stack, TextField, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from '../store';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -18,7 +18,7 @@ const Input = styled('input')({
 const AddPicture = () => {
   const { plantId } = useParams();
   const navigate = useNavigate();
-  const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm();
+  const { handleSubmit, formState: { errors }, register, reset, watch } = useForm();
   const queryClient = useQueryClient();
   const id = useStore(state => state.userId);
 

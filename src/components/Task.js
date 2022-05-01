@@ -1,10 +1,8 @@
-import { Stack, Avatar, Typography, IconButton, Checkbox, CircularProgress, Alert, Chip, Link } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-//import { Link } from "react-router-dom";
+import { Avatar, Checkbox, Chip, Link, Stack, Typography } from '@mui/material';
+import { useMutation, useQueryClient } from 'react-query';
 import { useStore } from '../store';
-import { useEffect, useState } from "react";
 
 const label = {inputProps: { 'aria-label': 'checkbox test'}}
 const backendUrl = process.env.REACT_APP_BACKEND_URL;

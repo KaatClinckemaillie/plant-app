@@ -1,6 +1,5 @@
-import { ImageList, Typography, Grid, ImageListItem, Chip, Paper, Link } from '@mui/material';
-import montsera from '../assets/plants/montsera.jpeg';
-//import { Link } from "react-router-dom";
+import { ImageList, Typography, Grid, ImageListItem, Paper, Link } from '@mui/material';
+
 
 import { useStore } from '../store';
 

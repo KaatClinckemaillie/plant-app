@@ -1,7 +1,7 @@
-import { Box, Typography, Grid, CircularProgress, Alert, AppBar, IconButton, Stack } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useNavigate, useParams } from "react-router-dom";
+import { AppBar, Box, IconButton, Stack, Typography } from '@mui/material';
 import { useQuery } from 'react-query';
+import { useNavigate, useParams } from "react-router-dom";
 import PlantItem from '../components/PlantItem';
 
 
@@ -30,7 +30,7 @@ const PlantCategory = () => {
     return data;
   })
 
-  const { isLoading, error, data: plantsorts } = useQuery(["plantsorts", query], async () => {
+  const { data: plantsorts } = useQuery(["plantsorts", query], async () => {
     const data = await fetch(`${backendUrl}/api/plantsorts?${query}`).then(r => r.json());
     return data;
   });

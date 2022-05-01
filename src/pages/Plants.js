@@ -1,14 +1,13 @@
-import { Typography, AppBar, Tabs, Tab, Box, List, Stack, CircularProgress, Alert, Button } from '@mui/material';
+import { AppBar, Box, Button, CircularProgress, List, Stack, Tab, Tabs, Typography } from '@mui/material';
 import * as React from 'react';
-import TabPanel from '../components/TabPanel';
+import { useQuery } from 'react-query';
+import { Link } from "react-router-dom";
 import LabelMyPlants from '../components/LabelMyPlants';
 import LocationMyPlants from '../components/LocationMyPlants';
-import PlantMyPlants from '../components/PlantMyPlants';
-import StandardImagesList from '../components/StandardImageList';
 import PlantItem from '../components/PlantItem';
-import { useQuery } from 'react-query';
+import StandardImagesList from '../components/StandardImageList';
+import TabPanel from '../components/TabPanel';
 import { useStore } from '../store';
-import { Link } from "react-router-dom";
 
 const a11yProps = (index) => {
   return {
@@ -39,7 +38,7 @@ const Plants = () => {
     encodeValuesOnly: true,
   });
 
-  const { isLoading: loadingLocations, error, data: locations } = useQuery(["locations", query], async () => {
+  const { isLoading: loadingLocations, data: locations } = useQuery(["locations", query], async () => {
     const data = await fetch(`${backendUrl}/api/locations?${query}`).then(r => r.json());
     return data;
   });

@@ -21,7 +21,6 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const AddPlant = () => {
   const { plantsortId } = useParams();
-  const userId = useStore(state => state.userId);
   const navigate = useNavigate();
   const { handleSubmit, formState: { errors }, register, control, reset, watch } = useForm({defaultValues});
   const queryClient = useQueryClient();
@@ -118,7 +117,7 @@ const AddPlant = () => {
 
 
 
-  const { isLoading: plantsortIsLoading, data: plantsort } = useQuery(["plantsort", plantsortId], async () => {
+  const {  data: plantsort } = useQuery(["plantsort", plantsortId], async () => {
     const data = await fetch(`${backendUrl}/api/plantsorts/${plantsortId}?populate=*`).then(r => r.json());
     return data;
   });

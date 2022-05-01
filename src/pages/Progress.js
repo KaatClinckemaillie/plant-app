@@ -1,7 +1,7 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
-import {Paper, ImageList, ImageListItem, ImageListItemBar, CircularProgress, IconButton, Box, Typography}from '@mui/material';
-import { useQuery } from 'react-query';
 import CloseIcon from '@mui/icons-material/Close';
+import { Box, CircularProgress, IconButton, ImageList, ImageListItem, ImageListItemBar, Typography } from '@mui/material';
+import { useQuery } from 'react-query';
+import { useNavigate, useParams } from "react-router-dom";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -10,7 +10,7 @@ const Progress = () => {
   const navigate = useNavigate();
 
 
-  const { isLoading, error, data: progress } = useQuery(["progress", progressId], async () => {
+  const { isLoading,  data: progress } = useQuery(["progress", progressId], async () => {
     const data = await fetch(`${backendUrl}/api/progresses/${progressId}?populate=*`).then(r => r.json());
     return data;
   });

@@ -1,23 +1,23 @@
+import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
+import TabsListUnstyled from '@mui/base/TabsListUnstyled';
+import TabsUnstyled from '@mui/base/TabsUnstyled';
+import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Button, CircularProgress, IconButton, Stack, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
-import { Stack, CircularProgress, Alert, Typography, Button , IconButton} from '@mui/material';
-import TabsUnstyled from '@mui/base/TabsUnstyled';
-import TabsListUnstyled from '@mui/base/TabsListUnstyled';
-import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
-import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
+import React from 'react';
 import { useQuery } from 'react-query';
-import React, { useEffect, useState } from 'react';
-import { useStore } from '../store';
-import LogoutIcon from '@mui/icons-material/Logout';
-
-
-import BasicSpeedDial from '../components/BasicSpeedDial';
-
-
-
-
-import Tasks from '../components/Tasks';
 import { useNavigate } from 'react-router-dom';
+import BasicSpeedDial from '../components/BasicSpeedDial';
+import Tasks from '../components/Tasks';
+import { useStore } from '../store';
+
+
+
+
+
+
 
 
 const Tab = styled(TabUnstyled)`
@@ -85,17 +85,17 @@ const Home = () => {
 
 
   //get data
-  const { isLoading: tasksLoading, error: tasksError, data: tasks } = useQuery(["tasks", query], async () => {
+  const { data: tasks } = useQuery(["tasks", query], async () => {
     const data = await fetch(`${backendUrl}/api/tasks?${query}`).then(r => r.json());
     return data;
   }); 
 
-  const { isLoading: actionsLoading, error: actionsError, data: actions } = useQuery("actions", async () => {
+  const { data: actions } = useQuery("actions", async () => {
     const data = await fetch(`${backendUrl}/api/actions`).then(r => r.json());
     return data;
   }); 
 
-  const {data: plants, isloading: plantsLoading} = useQuery(["plants", query], async() => {
+  const {data: plants} = useQuery(["plants", query], async() => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
   })

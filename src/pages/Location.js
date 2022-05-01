@@ -1,9 +1,9 @@
-import { IconButton, AppBar, Typography, Stack, Chip, Box, Alert, CircularProgress, Divider, Link} from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom'
-import { useStore } from '../store';
-import { useQuery } from 'react-query';
-import PlantItem from '../components/PlantItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Alert, AppBar, Box, Chip, CircularProgress, Divider, IconButton, Stack, Typography } from '@mui/material';
+import { useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import PlantItem from '../components/PlantItem';
+import { useStore } from '../store';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -32,7 +32,7 @@ const Location = () => {
     encodeValuesOnly: true,
   });
 
-  const { isLoading, error, data: plants} = useQuery(["plants", query], async () => {
+  const { isLoading, data: plants} = useQuery(["plants", query], async () => {
     const data = await fetch(`${backendUrl}/api/plants?${query}`).then(r => r.json());
     return data;
   });  
